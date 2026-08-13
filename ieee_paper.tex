@@ -1,0 +1,98 @@
+% IEEE conference paper: Physics Transformers: Tensor Inputs, Law-Conditioned Attention, and Fused Reasoning--Physics Layers
+% Compile: pdflatex ieee_paper.tex   (figures in ../figs)
+\documentclass[conference,10pt]{IEEEtran}
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{url}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+
+\title{Physics Transformers: Tensor Inputs, Law-Conditioned Attention, and Fused Reasoning--Physics Layers}
+
+\author{\IEEEauthorblockN{Sehaj Randhir Singh}
+\IEEEauthorblockA{\textit{Department of Electrical and Computer Engineering,}\\
+\textit{NYU Tandon School of Engineering (independent researcher)}\\
+Brooklyn, NY, USA\\
+sehajrsinghs@gmail.com}}
+
+\maketitle
+
+\begin{abstract}
+We present PhysFormer, a transformer adjusted for physics, and Law-Conditioned Attention (LCA), a new way to feed physics into it. The governing equation is tokenized into a fixed symbolic vocabulary, embedded into a law vector, and injected as a cross-attention key/value stream in every layer, giving physics an input channel in addition to the usual loss channel. Across 36 paired runs, LCA reduces trajectory error by 21\% (p = 0.0003); swapping the equation signature at inference causally steers the prediction (p < 0.0001) while a constant-signature control is exactly insensitive. The loss channel, isolated, buys consistency (6--8$\times$ residual reduction) but not held-out accuracy. We pre-registered a regime theory -- benefit should be monotone in token-vocabulary ambiguity -- and falsified it on a ten-law suite (Spearman $\rho = 0.07$, p = 0.88), reporting the failure analysis rather than a swept-under null. Against ten dedicated per-law DeepONets (median held-out error 0.037), the single generalist serves all ten laws at 0.110 with no law identity at inference, beating the specialists outright on spring and LC.
+\end{abstract}
+
+\begin{IEEEkeywords}
+physics-informed machine learning; transformers; multi-domain learning; law-conditioned attention; neural operators
+\end{IEEEkeywords}
+
+\section{Introduction}
+Physics-informed machine learning has converged on one template: a network fits the solutions of a single governing equation, and physics enters only as a penalty on the output. We show physics can enter as input tokens -- the equation signature itself -- so the network can use it at inference, not just during training. This paper measures the two channels separately (loss vs. input), tests a pre-registered theory of when conditioning pays, and compares against an external operator-network baseline.
+
+\section{Method}
+PhysFormer embeds each physical quantity token (length, load, stiffness, ...) and operator token into a shared vocabulary, forms a law vector from the equation signature, and injects it as cross-attention in every transformer layer with a scale-bias gate on the readout. A physics-consistency layer computes the residual of the predicted trajectory against the governing equation and adds it to the loss. The multi-law protocol trains one shared body and shared heads on all laws at once (96 samples per law, 250 epochs, 3 seeds); the control is a dummy-signature condition with identical architecture and data.
+
+\section{Results}
+\begin{table}[!t]
+\caption{Pre-registered 10-law regime test: measured LCA benefit (median over
+three seeds) vs.\ equation ambiguity computed from the token vocabulary
+alone. The pre-registered monotone prediction is falsified
+($\rho = 0.07$, $p = 0.88$).}
+\label{tab:regime}
+\centering
+\begin{tabular}{lcc}
+\toprule
+Law & Ambiguity & Benefit \\
+\midrule
+beam & 1.000 & +0.719 \\
+cantilever & 1.000 & +0.340 \\
+projectile & 0.500 & +0.141 \\
+pendulum & 1.000 & +0.539 \\
+spring & 1.000 & -0.407 \\
+rc & 0.667 & -0.049 \\
+damped & 0.750 & -0.013 \\
+kepler & 0.667 & -0.134 \\
+lc & 0.667 & -0.149 \\
+drag & 0.500 & +0.110 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[!t]
+\caption{External operator-network baseline. Per-law DeepONet held-out
+trajectory error vs.\ the single law-conditioned generalist
+(median 0.037 vs.\ 0.110 over the nine non-degenerate laws).}
+\label{tab:deeponet}
+\centering
+\begin{tabular}{lc}
+\toprule
+Law & DeepONet error \\
+\midrule
+beam & 0.025 \\
+cantilever & 0.009 \\
+projectile & 0.011 \\
+pendulum & 0.037 \\
+spring & 0.122 \\
+rc & 0.007 \\
+damped & 0.141 \\
+kepler & 0.066 \\
+lc & 0.192 \\
+drag & 0.011 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Law-conditioned attention reduces trajectory error by 21\% (p = 0.0003) over 36 paired runs, and the effect concentrates on the one token-identical pair (beam/cantilever). The pre-registered regime prediction failed; the failure analysis shows the overlap measure conflates token-superset relations with genuine indistinguishability. Ten dedicated DeepONets reach median error 0.037 vs. 0.110 for the single generalist -- a tradeoff stated plainly, not a win claimed.
+
+\section{Honest limitations}
+The pooled single-model DeepONet (law identity as an explicit one-hot branch input) did not complete under available compute and is reported as an attempt, not a result. The refined regime hypothesis remains open: pendulum shows consistent benefit with no token twin, and learned embeddings do not confound its tokens (max cosine 0.30).
+
+\begin{thebibliography}{1}
+\bibitem{lu2021deeponet} L.~Lu, P.~Jin, G.~Pang, Z.~Zhang, and G.~E. Karniadakis, ``Learning nonlinear operators via DeepONet based on the universal approximation theorem of operators,'' Nature Machine Intelligence, vol.~3, pp.~218--229, 2021.
+\bibitem{raissi2019pinn} M.~Raissi, P.~Perdikaris, and G.~E. Karniadakis, ``Physics-informed neural networks,'' Journal of Computational Physics, vol.~378, pp.~686--707, 2019.
+\end{thebibliography}
+
+\end{document}

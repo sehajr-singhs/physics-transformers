@@ -1,116 +1,135 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light">
-<title>Physics Transformers</title>
-<meta name="description" content="The governing equation is fed to a transformer as input tokens, not only as a penalty — and a pre-registered theory of when that should pay was tested on ten laws and falsified. The failure is the paper's sharpest result.">
-<style>
-  :root{
-    --bg:#ffffff; --ink:#1a1a1a; --muted:#6a6a6a; --hair:#e6e6e6;
-    --panel:#f5f5f5; --panel-edge:#e4e4e4; --link:#1f6fb2;
-    --good:#2f8558; --warn:#b23c1e; --grid:#ececec;
-    --serif:Georgia,'Times New Roman',serif;
-    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-    --mono:'SFMono-Regular',Consolas,'Liberation Mono','Courier New',monospace;
-  }
-  html{background:#ffffff;}
-  *{box-sizing:border-box;}
-  body{max-width:860px;margin:0 auto;padding:44px 24px 96px;background:#ffffff;color:var(--ink);
-    font-family:var(--sans);font-size:17px;line-height:1.7;
-    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
-  a{color:var(--link);text-decoration:none;} a:hover{text-decoration:underline;}
-  h1,h2,.envlabel{font-family:var(--serif);text-wrap:balance;}
-  h1{font-size:35px;line-height:1.18;font-weight:700;text-align:center;margin:0 0 16px;letter-spacing:-.01em;}
-  .subtitle{text-align:center;color:var(--muted);font-size:19px;line-height:1.55;margin:0 auto 14px;max-width:660px;}
-  .byline{text-align:center;color:var(--muted);font-size:15.5px;margin:0 0 14px;}
-  .toplinks{text-align:center;font-size:16px;margin:0 0 8px;} .toplinks a{margin:0 7px;white-space:nowrap;}
-  h2{font-size:26px;font-weight:700;text-align:center;margin:60px 0 6px;padding-top:34px;border-top:1px solid var(--hair);}
-  p{margin:16px 0;} .lead{font-weight:700;}
-  .note{color:var(--muted);font-size:15px;} .center{text-align:center;}
-  .abstract{background:var(--panel);border:1px solid var(--panel-edge);padding:22px 26px;border-radius:8px;}
-  .abstract p{margin:0;text-align:justify;}
-  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 8px;}
-  .kpi{background:var(--panel);border:1px solid var(--panel-edge);border-radius:10px;padding:16px 16px 14px;}
-  .kpi .big{font-family:var(--serif);font-size:30px;font-weight:700;line-height:1.05;font-variant-numeric:tabular-nums;letter-spacing:-.01em;}
-  .kpi .lab{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-top:9px;}
-  .kpi .sub{font-size:13.5px;color:var(--muted);margin-top:5px;line-height:1.4;}
-  .kpi .up{color:var(--good);font-weight:700;}
-  .kpi .down{color:var(--warn);font-weight:700;}
-  @media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr);}}
-  .figwrap{margin:22px 0 4px;text-align:center;}
-  .figwrap img{max-width:100%;border:1px solid var(--panel-edge);border-radius:8px;}
-  .figcap{color:var(--muted);font-size:14px;margin:6px auto 0;max-width:720px;}
-  .tablescroll{overflow-x:auto;}
-  table{border-collapse:collapse;margin:16px auto;font-size:14.5px;font-family:var(--serif);width:100%;}
-  th,td{border:1px solid var(--hair);padding:7px 12px;text-align:left;vertical-align:top;}
-  th{background:var(--panel);font-weight:700;}
-  td.win{font-weight:700;color:var(--good);} td.num{font-variant-numeric:tabular-nums;}
-  pre{background:var(--panel);border:1px solid var(--panel-edge);padding:16px 18px;overflow-x:auto;
-    font-size:13.5px;font-family:var(--mono);line-height:1.55;border-radius:8px;}
-  code{font-family:var(--mono);font-size:.92em;}
-  .sisters{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:18px 0;}
-  .sister{background:var(--panel);border:1px solid var(--panel-edge);border-radius:8px;padding:12px 14px;font-size:15px;}
-  .sister b{font-family:var(--serif);}
-  .foot{margin-top:56px;padding-top:22px;border-top:1px solid var(--hair);color:var(--muted);font-size:14px;text-align:center;}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+  <meta charset="utf-8">
+  <meta name="description" content="Law-conditioned attention, a pre-registered falsification, and DeepONet baselines: the equation is fed to the transformer as input tokens, not only as a penalty.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Physics <strong>Transformers</strong></title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/computer-modern/cmu-serif.css">
+  
+  <script>
+    MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] } };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <style>
+    :root {
+      --ink: #1a1a1a; --muted: #555; --faint: #8c8e90; --panel: #f8f8f8;
+      --border: #c4c6c8; --link: #226999; --good: #1e6b3a; --bad: #b03a2e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #fff; }
+    body { font-family: 'CMU Serif', Georgia, serif; font-weight: 500;
+      color: var(--ink); -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+    .has-text-centered { text-align: center; }
+    .has-text-justified { text-align: justify; }
+
+    .hero { padding: 4.2rem 0 1.6rem; }
+    .publication-title { font-family: 'CMU Serif', Georgia, serif;
+      font-weight: 700 !important; line-height: 1.12; letter-spacing: 0;
+      font-size: 2.5rem; text-wrap: balance; }
+    .publication-title strong { font-weight: 900 !important; }
+    .publication-sub { margin-top: 1.1rem; font-family: 'Inter', sans-serif;
+      font-size: 1.05rem; color: var(--muted); line-height: 1.5;
+      max-width: 60rem; margin-left: auto; margin-right: auto; }
+    .tagline { margin-top: 0.9rem; font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.92rem; color: var(--ink); letter-spacing: 0.01em; }
+    .authors { margin-top: 1.2rem; font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; color: var(--ink); }
+    .affiliation { margin-top: 0.15rem; font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; color: var(--faint); }
+    .links { margin-top: 1.5rem; font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.88rem; display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem;
+      justify-content: center; }
+
+    .section { padding: 2.4rem 0 1.2rem; }
+    .title { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em;
+      margin-bottom: 1rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border); }
+    .section p { line-height: 1.6; color: var(--ink); margin-bottom: 0.9rem; }
+    .muted { color: var(--muted); }
+
+    .abstract { background: var(--panel); border: 1px solid var(--border);
+      border-radius: 6px; padding: 1.4rem 1.6rem; font-size: 0.99rem;
+      line-height: 1.62; text-align: justify; }
+
+    .impact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem; margin-top: 1.1rem; }
+    .impact { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .impact-img { width: 100%; display: block; border-bottom: 1px solid var(--border); }
+    .impact-body { padding: 0.9rem 1.1rem 1.05rem; }
+    .impact-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem;
+      font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 0.35rem; }
+    .impact-body p { font-size: 0.88rem; line-height: 1.5; color: var(--muted); margin: 0; }
+
+    table { width: 100%; border-collapse: collapse; font-family: 'Inter', sans-serif;
+      font-size: 0.83rem; margin: 1rem 0 1.4rem; background: var(--panel);
+      border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    th, td { padding: 0.5rem 0.65rem; text-align: right; border-bottom: 1px solid var(--border); }
+    th:first-child, td:first-child { text-align: left; }
+    thead th { font-weight: 600; font-size: 0.78rem; letter-spacing: 0.02em;
+      text-transform: uppercase; color: var(--muted); background: #fff; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr.ref td { border-top: 2px solid var(--ink); font-weight: 600; }
+    td.win { color: var(--good); font-weight: 700; }
+    td.bad { color: var(--bad); font-weight: 600; }
+    td.worst { color: #8c1f13; font-weight: 700; }
+    .table-note { font-family: 'IBM Plex Mono', monospace; font-size: 0.76rem;
+      color: var(--faint); margin-top: -1rem; margin-bottom: 1.2rem; }
+    .tablescroll { overflow-x: auto; }
+
+    .sisters { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.9rem; margin-top: 1rem; }
+    .sister { background: var(--panel); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.85rem 1rem; font-family: 'Inter', sans-serif; }
+    .sister b { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; }
+    .sister p { font-size: 0.82rem; color: var(--muted); margin: 0.3rem 0 0; line-height: 1.45; }
+
+    pre { background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+      padding: 1.1rem 1.3rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem;
+      line-height: 1.55; overflow-x: auto; margin: 1rem 0; }
+
+    footer { margin-top: 3rem; padding: 1.6rem 0 2.6rem; border-top: 1px solid var(--border);
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; color: var(--faint);
+      text-align: center; }
+    @media (max-width: 600px) { .publication-title { font-size: 1.8rem; }
+      th, td { padding: 0.4rem 0.4rem; font-size: 0.74rem; } }
 </style>
 </head>
 <body>
 
-<h1>Physics Transformers</h1>
-<p class="subtitle">The governing equation is fed to a transformer as input tokens, not only as a penalty — and a pre-registered theory of when that should pay was tested on ten laws and falsified. The failure is the paper's sharpest result.</p>
-<p class="byline">Sehaj Randhir Singh &middot; independent, affiliated with NYU Tandon ECE &middot; 2026</p>
-<p class="toplinks">
-  [<a href='https://github.com/sehajr-singhs/physics-transformers'>Code</a>]
-  [<a href='manuscript.pdf'>Paper</a>]
-  [<a href='supplementary_information.pdf'>Supplementary</a>]
-</p>
+<section class="hero">
+  <div class="container has-text-centered">
+    <h1 class="publication-title">Physics <strong>Transformers</strong></h1>
+    <div class="tagline">The equation is input, not only loss — and the pre-registered theory of when that pays was falsified on ten laws, in full.</div>
+    <div class="authors">Sehaj Randhir Singh</div>
+    <div class="affiliation">Independent researcher; partial affiliation with NYU Tandon School of Engineering</div>
+    <div class="links">
+      <a href="https://sehajr-singhs.github.io/physics-transformers/manuscript.pdf">Paper (NMI format)</a><a href="https://sehajr-singhs.github.io/physics-transformers/ieee_paper.pdf">Paper (IEEE format)</a><a href="https://sehajr-singhs.github.io/physics-transformers/supplementary_information.pdf">Supplementary</a><a href="https://github.com/sehajr-singhs/physics-transformers">GitHub (code + data)</a>
+    </div>
+  </div>
+</section>
 
-<div class="kpis">
-  <div class="kpi"><div class="big">ρ = 0.07</div><div class="lab">Pre-registered prediction</div><div class="sub">falsified: p = 0.88, leave-one-out ρ = −0.58, reported in full</div></div>
-  <div class="kpi"><div class="big">21%</div><div class="lab">Trajectory error cut</div><div class="sub">law-conditioned attention, 36 paired runs, p = 0.0003</div></div>
-  <div class="kpi"><div class="big">p < 0.0001</div><div class="lab">Equation swap steers prediction</div><div class="sub">constant-signature control exactly insensitive</div></div>
-  <div class="kpi"><div class="big">0.037 / 0.110</div><div class="lab">DeepONet vs generalist</div><div class="sub">ten dedicated operators vs one model, no law identity</div></div>
-</div>
-
-<h2>The result</h2>
-<div class="abstract">
-  <p>('PhysFormer is a transformer adjusted for physics. Physics enters through two channels with different jobs: a loss channel (a differentiable physics-consistency layer that buys consistency, 6–8× residual reduction, without held-out accuracy) and an input channel — the invention of this paper — which tokenizes the governing equation into a symbolic vocabulary and injects it as a cross-attention stream in every layer. One shared transformer solves ten laws at once, beam and cantilever presenting literally identical parameter tokens with only the equation to distinguish them. The causal test (p < 0.0001), the falsified pre-registration, and the DeepONet external baseline are all measured, all committed, and all re-runnable.',)</p>
-</div>
-
-<h2>What survived contact with the mathematics</h2><p>("<span class='lead'>The equation is causally active.</span> Swapping the equation signature at inference steers the prediction while a constant-signature control is exactly insensitive; the effect concentrates on the one token-identical pair (beam/cantilever). <span class='lead'>The regime theory failed — and that is the result.</span> Filed before any ten-law training: benefit should be monotone in token-vocabulary ambiguity. Measured after 6 full trainings: ρ = 0.07, p = 0.88. The overlap measure conflates supersets with genuine indistinguishability, and the refined hypothesis is left as an open problem, not a swept-under null. The pre-registration is committed in results/pre_registration.json.",)</p><h2>External baseline</h2><p>("Ten dedicated per-law DeepONets on identical splits reach median held-out error 0.037 vs. the single generalist's 0.110 — but they are ten separate models with no cross-law structure. The generalist beats the per-law specialists outright on spring (0.111 vs 0.122) and LC (0.100 vs 0.192) while serving all ten laws with one set of weights. A tradeoff, stated plainly; the pooled single-model DeepONet did not complete under available compute and is reported as an attempt, not a result.",)</p>
-
-<div class="figwrap"><img src="figs/fig7_regime_oos.png" alt="Figure 1"><p class="figcap">Pre-registered prediction vs. measured benefit (left) and the failure analysis (right).</p></div>
-<div class="figwrap"><img src="figs/fig8_deeponet.png" alt="Figure 2"><p class="figcap">External operator-network baseline: ten dedicated DeepONets vs. the single generalist.</p></div>
-
-<h2>Sister papers in this series</h2>
-<p class="note center">Seven manuscripts, one codebase, one guarantee: every number traces to a
-committed JSON and regenerates from a committed script.</p>
-<div class="sisters">
-  <div class="sister"><b><a href="https://sehajr-singhs.github.io/AGE-artificial-general-engineer/">AGE-artificial-general-engineer</a></b><br>the system these components came from</div>
-  <div class="sister"><b><a href="https://sehajr-singhs.github.io/physbench/">physbench</a></b><br>the 12-domain verifiable benchmark</div>
-  <div class="sister"><b><a href="https://sehajr-singhs.github.io/verification-gated-agents/">verification-gated-agents</a></b><br>the gate as the missing control in agent evaluation</div>
-  <div class="sister"><b><a href="https://sehajr-singhs.github.io/physics-loss-channel/">physics-loss-channel</a></b><br>the loss channel isolated</div>
-  <div class="sister"><b><a href="https://sehajr-singhs.github.io/fewshot-law-acquisition/">fewshot-law-acquisition</a></b><br>transfer across laws</div>
-  <div class="sister"><b><a href="https://sehajr-singhs.github.io/field-consistency/">field-consistency</a></b><br>the cost of consistency on 2D fields</div>
-</div>
-
-<h2>Reproduce</h2>
-<pre>git clone https://github.com/sehajr-singhs/physics-transformers
+<div class="container">
+<section class="section"><div class="abstract"><p>We present PhysFormer, a transformer adjusted for physics, and Law-Conditioned Attention (LCA), a new way to feed physics into it. The governing equation is tokenized into a fixed symbolic vocabulary, embedded into a law vector, and injected as a cross-attention key/value stream in every layer. Physics enters through two channels with different jobs: the loss channel (a physics-consistency layer) buys consistency, 6–8× residual reduction, without held-out accuracy; the input channel — the invention of this paper — is causally active at inference. Across 36 paired runs, LCA reduces trajectory error by 21% (p = 0.0003); swapping the equation signature steers the prediction (p < 0.0001) while a constant-signature control is exactly insensitive. We pre-registered a regime theory and falsified it on a ten-law suite (ρ = 0.07, p = 0.88), reporting the failure analysis. Ten dedicated per-law DeepONets reach median held-out error 0.037 vs. the single generalist's 0.110, which beats them outright on spring and LC.</p></div></section><section class="section"><h2 class="title">Why the channel matters</h2><p>The standard way to make a network physical is a loss term — and the standard way to stop measuring what it does. This paper separates the two effects a single number usually conflates: physics as a penalty (consistency) and physics as input (accuracy). Only the input channel moves held-out error, and it does so causally: remove the equation signature at inference and the prediction changes in a direction the data alone cannot explain.</p><div class="impact-grid"><div class="impact"><img class="impact-img" src="figs/fig3_lawswap.png" alt=""><div class="impact-body"><div class="impact-num">Causal, p < 0.0001</div><p>Swapping the equation signature at inference steers the prediction; a constant-signature control is exactly insensitive. The equation is used, not decoratively present.</p></div></div><div class="impact"><img class="impact-img" src="figs/fig7_regime_oos.png" alt=""><div class="impact-body"><div class="impact-num">Falsified, ρ = 0.07</div><p>The pre-registered monotone regime theory failed (p = 0.88). The overlap measure conflates supersets with genuine indistinguishability — the failure analysis is the sharpest section.</p></div></div><div class="impact"><img class="impact-img" src="figs/fig8_deeponet.png" alt=""><div class="impact-body"><div class="impact-num">0.037 vs 0.110</div><p>Ten dedicated per-law DeepONets beat the single generalist on per-law fidelity, but with no cross-law structure; the generalist wins outright on spring and LC.</p></div></div></div></section><section class="section"><h2 class="title">The pre-registered regime test, in full</h2><p>Before any ten-law training, the prediction was filed: LCA benefit should be monotone in the token-vocabulary ambiguity of each law, computed from the vocabulary alone. After 6 full trainings (3 seeds × generalist/control): Spearman ρ = 0.07 (p = 0.88), leave-one-out ρ = −0.58, and the group-mean order is violated. The pre-registration is committed at results/pre_registration.json; the eval files that falsified it are in the same directory.</p><div class="tablescroll"><table><thead><tr><th>Law</th><th>Ambiguity</th><th>LCA benefit</th></tr></thead><tbody><tr><td>beam</td><td>1.000</td><td class="win">+0.719</td></tr><tr><td>cantilever</td><td>1.000</td><td class="win">+0.340</td></tr><tr><td>projectile</td><td>0.500</td><td class="">+0.141</td></tr><tr><td>pendulum</td><td>1.000</td><td class="win">+0.539</td></tr><tr><td>spring</td><td>1.000</td><td class="bad">-0.407</td></tr><tr><td>rc</td><td>0.667</td><td class="">-0.049</td></tr><tr><td>damped</td><td>0.750</td><td class="">-0.013</td></tr><tr><td>kepler</td><td>0.667</td><td class="">-0.134</td></tr><tr><td>lc</td><td>0.667</td><td class="">-0.149</td></tr><tr><td>drag</td><td>0.500</td><td class="">+0.110</td></tr></tbody></table></div><div class="table-note">Measured benefit = 1 − err_real / err_dummy (median over three seeds). beam/cantilever present literally identical parameter tokens — only the equation distinguishes them — and show the largest, most consistent benefits.</div></section><section class="section"><h2 class="title">The external baseline</h2><p>DeepONet, the standard operator-network architecture, trained per law on the identical data splits (64 training samples, 6 held out, 250 epochs).</p><div class="tablescroll"><table><thead><tr><th>Law</th><th>per-law DeepONet error</th></tr></thead><tbody><tr><td>beam</td><td>0.025</td></tr><tr><td>cantilever</td><td>0.009</td></tr><tr><td>projectile</td><td>0.011</td></tr><tr><td>pendulum</td><td>0.037</td></tr><tr><td>spring</td><td>0.122</td></tr><tr><td>rc</td><td>0.007</td></tr><tr><td>damped</td><td>0.141</td></tr><tr><td>kepler</td><td>0.066</td></tr><tr><td>lc</td><td>0.192</td></tr><tr><td>drag</td><td>0.011</td></tr></tbody></table></div><div class="table-note">A dedicated operator network wins on its own law; a single law-conditioned transformer covers all ten. The pooled single-model DeepONet (law identity as an explicit one-hot input — information the generalist never receives) did not complete under available compute and is reported as an attempt, not a result.</div></section><section class="section"><h2 class="title">Reproduce</h2><pre>git clone https://github.com/sehajr-singhs/physics-transformers
 cd physics-transformers
 python -m unittest tests.test_physx          # 49 physics tests, 10-law set
 python figs/make_figures.py && python figs/make_figures_ext.py
 python src/physx/regime_oos.py --out figs/regime_oos.json   # the falsification
-python src/physx/train_multi.py --ext --seeds 3             # real + dummy, 3 seeds</pre>
-<p class="note">Simulation-only, CPU-scale, deterministic seeds. No GPU required.</p>
-
-<div class="foot">
-  Sehaj Randhir Singh &middot; independent, affiliated with NYU Tandon ECE &middot; 2026<br>
-  <a href="https://sehajr-singhs.github.io/AGE-artificial-general-engineer/">AGE series home</a> &middot;
-  every paper in this series links to every other
+python src/physx/train_multi.py --ext --seeds 3             # real + dummy, 3 seeds</pre><p class="muted">Simulation-only, CPU-scale, deterministic seeds. No GPU required.</p></section><div class="section"><h2 class="title">Sister papers in the series</h2><p class="muted">Seven manuscripts, one codebase, one guarantee: every number traces to a committed JSON and regenerates from a committed script.</p><div class="sisters"><div class="sister"><b><a href="https://sehajr-singhs.github.io/AGE-artificial-general-engineer/">AGE-artificial-general-engineer</a></b><p>the system and its project root</p></div><div class="sister"><b><a href="https://sehajr-singhs.github.io/physbench/">physbench</a></b><p>the 12-domain verifiable benchmark</p></div><div class="sister"><b><a href="https://sehajr-singhs.github.io/verification-gated-agents/">verification-gated-agents</a></b><p>the gate as the missing control in agent evaluation</p></div><div class="sister"><b><a href="https://sehajr-singhs.github.io/physics-loss-channel/">physics-loss-channel</a></b><p>when physics in the loss helps — and when it only enforces consistency</p></div><div class="sister"><b><a href="https://sehajr-singhs.github.io/fewshot-law-acquisition/">fewshot-law-acquisition</a></b><p>transfer across laws: what carries the knowledge</p></div><div class="sister"><b><a href="https://sehajr-singhs.github.io/field-consistency/">field-consistency</a></b><p>the cost of consistency on 2D fields</p></div></div></div>
 </div>
+
+<footer>
+  <div class="container">
+    Sehaj Randhir Singh · independent researcher; partial affiliation with NYU Tandon ECE · 2026<br>
+    <a href="https://sehajr-singhs.github.io/AGE-artificial-general-engineer/">AGE series home</a> · every paper in this series links to every other
+  </div>
+</footer>
 
 </body>
 </html>
