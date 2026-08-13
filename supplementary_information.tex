@@ -1,0 +1,322 @@
+% Supplementary Information — Physics Transformers
+% Compile: pdflatex supplementary_information.tex
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{multirow}
+\usepackage{enumitem}
+
+\setlength{\parskip}{0.4em}
+\linespread{1.12}
+
+\newcommand{\PT}{{\scshape PhysFormer}}
+\newcommand{\LCA}{{\scshape LCA}}
+
+\title{\bfseries Supplementary Information\\
+Physics transformers: tensor inputs, law-conditioned attention, and fused\\
+reasoning--physics layers for multi-law learning}
+
+\author{Sehaj Randhir Singh \\ \small Correspondence: sehajrsinghs@gmail.com}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{SI 1. The operator vocabulary}
+\label{si:vocab}
+
+Table~\ref{tab:si1} lists all 22 operators in the law vocabulary, with the
+symbolic meaning used to derive each law signature. The order is fixed; law
+signatures are dense binary vectors over this order, so reordering would
+invalidate the stored signatures.
+
+\begin{table}[h]
+\centering
+\caption{The 22-operator law vocabulary.}
+\label{tab:si1}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Index & Operator & Meaning \\
+\midrule
+0 & first\_time\_deriv & $\partial_t$ \\
+1 & second\_time\_deriv & $\partial_t^2$ \\
+2 & first\_space\_deriv & $\partial_x$ \\
+3 & second\_space\_deriv & $\partial_x^2$ \\
+4 & self\_advection & $u\,u_x$ \\
+5 & linear\_restoring & $k x$ \\
+6 & energy\_conservation & $E = \mathrm{const}$ \\
+7 & exponential\_relaxation & $V/\tau$ \\
+8 & nonlinear\_trig & $\sin/\cos$ of state \\
+9 & gravity\_coupling & $g$ \\
+10 & algebraic\_closed\_form & closed-form trajectory \\
+11 & piecewise\_load & piecewise source \\
+12 & separable\_modes & $\sin(k\pi x)\sin(l\pi y)$ \\
+13 & diffusion & $\nu u_{xx}$ \\
+14 & moment\_curvature & $EI w''$ \\
+15 & laplacian\_2d & $u_{xx} + u_{yy}$ \\
+16 & quadratic\_in\_space & $x^2$ \\
+17 & trig\_of\_param & $\cos\alpha$ \\
+18 & angular\_velocity\_squared & $\omega^2$ \\
+19 & harmonic & $\sqrt{k/m}$ \\
+20 & linear\_in\_space & $(L - x)$ \\
+21 & poisson\_source & $f(x,y)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{SI 2. The quantity vocabulary}
+\label{si:quantities}
+
+The 13 physical-quantity labels used for parameter tokens are: length,
+force, modulus, inertia, thickness, speed, angle, stiffness, mass,
+amplitude, resistance, capacitance, voltage. Each domain maps its parameters
+to a canonical ordered list of quantity ids; beam and cantilever use the
+identical list (length, force, modulus, inertia, thickness), which is what
+makes their token sequences identical.
+
+\section*{SI 3. Multi-law results: per-domain detail}
+\label{si:multilaw}
+
+Table~\ref{tab:si3} reports medians over 6 seeds per condition (real law
+signature vs.\ constant-signature control) for trajectory error, answer
+error, and physics residual, with paired Wilcoxon p-values. All values are
+read directly from \texttt{multi\_law\_data.json}.
+
+\begin{table}[h]
+\centering
+\caption{Per-law medians over 6 seeds.}
+\label{tab:si3}
+\small
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+ & \multicolumn{2}{c}{trajectory err} & \multicolumn{2}{c}{answer err} & \multicolumn{2}{c}{phys residual} & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+Law & cond. & ctrl & cond. & ctrl & cond. & ctrl & p (curve) \\
+\midrule
+beam & 0.047 & 0.289 & 0.340 & 0.404 & 183 & 116 & 0.031 \\
+cantilever & 0.129 & 0.252 & 0.283 & 0.346 & 582 & 1970 & 0.031 \\
+projectile & 0.102 & 0.129 & 0.110 & 0.112 & 0.053 & 0.043 & 0.69 \\
+pendulum & 0.050 & 0.056 & 0.021 & 0.023 & 0.003 & 0.004 & 0.69 \\
+spring & 0.091 & 0.088 & 0.063 & 0.058 & 0.154 & 0.230 & 0.31 \\
+rc & 0.099 & 0.115 & 0.611 & 0.509 & 14.8 & 10.5 & 0.16 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{SI 4. Causal law-swap: per-seed detail}
+\label{si:lawswap}
+
+Table~\ref{tab:si4} gives the per-seed steering indices (median over the 12
+pooled samples per seed). The pooled Wilcoxon over the 72 samples gives
+p $= 2.4\times10^{-13}$ for the steering index and
+p $= 1.7\times10^{-13}$ for disruption; the per-seed medians give p $= 0.031$
+(6 seeds). Disruption for the control is exactly 0.000 for every seed, every
+sample.
+
+\begin{table}[h]
+\centering
+\caption{Per-seed steering index (median).}
+\label{tab:si4}
+\small
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+seed & 0 & 1 & 2 & 3 & 4 & 5 & median \\
+\midrule
+conditioned & $-0.429$ & $-0.397$ & $-0.455$ & $-0.420$ & $-0.391$ & $-0.407$ & $-0.413$ \\
+control & $-0.563$ & $-0.589$ & $-0.582$ & $-0.534$ & $-0.605$ & $-0.587$ & $-0.584$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{SI 5. Few-shot adaptation: per-seed detail}
+\label{si:fewshot}
+
+Table~\ref{tab:si5} reports the three seeds of the few-shot experiment
+(cantilever, 24 samples, 40 epochs). The generalist was pretrained on the
+other five laws (96 samples each); the specialist is trained from scratch on
+the same 24 samples.
+
+\begin{table}[h]
+\centering
+\caption{Per-seed few-shot results.}
+\label{tab:si5}
+\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & seed 0 & seed 1 & seed 2 \\
+\midrule
+generalist (conditioned) answer & 0.197 & 0.287 & 0.182 \\
+generalist (control) answer & 0.239 & 0.437 & 0.153 \\
+specialist answer & 0.279 & 0.580 & 0.691 \\
+\midrule
+generalist (conditioned) curve & 0.137 & 0.134 & 0.172 \\
+specialist curve & 0.273 & 0.284 & 0.282 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{SI 6. The two physics channels: full 12-run table}
+\label{si:channels}
+
+Table~\ref{tab:si6} lists all 12 runs of the physics-vs-data sweep
+(heat2d; 2 sample budgets $\times$ 2 physics weights $\times$ 3 seeds). The
+aggregated means are reported in the main text (Table 5).
+
+\begin{table}[h]
+\centering
+\caption{Physics-vs-data sweep, per run.}
+\label{tab:si6}
+\small
+\begin{tabular}{@{}lllllll@{}}
+\toprule
+samples & $w_{\mathrm{phys}}$ & seed & answer err & field max err & field mean err & residual \\
+\midrule
+64 & 0.0 & 0 & 0.0215 & 0.116 & 0.024 & 2.60 \\
+64 & 0.0 & 1 & 0.0152 & 0.207 & 0.043 & 4.46 \\
+64 & 0.0 & 2 & 0.0245 & 0.150 & 0.027 & 4.04 \\
+64 & 0.05 & 0 & 0.0403 & 0.512 & 0.151 & 0.387 \\
+64 & 0.05 & 1 & 0.0231 & 0.496 & 0.138 & 0.370 \\
+64 & 0.05 & 2 & 0.0187 & 0.523 & 0.158 & 0.589 \\
+256 & 0.0 & 0 & 0.0110 & 0.032 & 0.007 & 0.815 \\
+256 & 0.0 & 1 & 0.0086 & 0.033 & 0.007 & 0.458 \\
+256 & 0.0 & 2 & 0.0125 & 0.032 & 0.007 & 0.347 \\
+256 & 0.05 & 0 & 0.0179 & 0.316 & 0.083 & 0.106 \\
+256 & 0.05 & 1 & 0.0121 & 0.270 & 0.076 & 0.079 \\
+256 & 0.05 & 2 & 0.0150 & 0.246 & 0.058 & 0.061 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{SI 7. DeepXDE external baseline}
+\label{si:deepxde}
+
+Per-instance PINNs (DeepXDE 1.15, PyTorch backend) were trained on three
+Burgers instances (canonical $\nu=0.05$; mild $\nu=0.1$; shock $\nu=0.02$)
+for roughly 19 minutes of wall time each ($1116$--$1272$ s). The single
+generalist \PT{} answers all three in one forward pass per instance.
+
+\begin{table}[h]
+\centering
+\caption{Generalist vs.\ per-instance PINN on Burgers.}
+\label{tab:si7}
+\small
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+ & \multicolumn{2}{c}{canonical} & \multicolumn{2}{c}{mild} & \multicolumn{2}{c}{shock} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+ & PINN & \PT{} & PINN & \PT{} & PINN & \PT{} \\
+\midrule
+answer err & 0.000 & 0.005 & 0.000 & 0.000 & 0.000 & 0.037 \\
+full-field curve err & 0.0003 & 0.329 & 0.0006 & 0.505 & 0.0003 & 0.379 \\
+phys residual & 0.0033 & 0.0002 & 0.0013 & 0.0017 & 0.0051 & 0.0016 \\
+train wall time & 1163 s & --- & 1116 s & --- & 1272 s & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{SI 8. Regime theory: exact permutation test}
+\label{si:regime}
+
+The regime-theory correlation (main text Fig.~5) uses Spearman's $\rho$
+between the a priori equation ambiguity and the measured \LCA{} benefit over
+the five non-degenerate laws. Because $n = 5$, the null distribution is
+computed exactly by enumerating all $5! = 120$ permutations of the benefit
+ranks; $\rho_{\mathrm{obs}} = 1.0$ is achieved only by the identity
+permutation (one of 60 two-sided configurations), giving the exact
+two-sided p $= 1/60 = 0.0167$. Including RC (the structurally degenerate
+law, whose normalized trajectory is parameter-invariant) gives
+$\rho = 0.77$, p $= 0.10$; RC is excluded from the headline statistic with
+that rationale stated in the main text.
+
+\section*{SI 9. The pre-registered ten-law test: full detail}
+\label{si:oos}
+
+The pre-registration (\texttt{physx/models/ext/pre\_registration.json}) was
+written before any ten-law training. Table~\ref{tab:oos} gives every
+per-seed trajectory error, the median benefit per law, the vocabulary
+alone ambiguity, and the token-identity status. The three falsifiable
+statements and their outcomes:\par\smallskip
+\begin{itemize}[leftmargin=1.6em,itemsep=0.15em]
+  \item $\rho(\mathrm{amb}, \mathrm{benefit}) > 0$ with p $< 0.05$ over the
+  nine non-degenerate laws: \textbf{failed} ($\rho = 0.07$, exact
+  permutation p = 0.88).
+  \item Leave-one-law-out predicted benefit ranks correlate with measured
+  ranks: \textbf{failed} ($\rho_{\mathrm{OOS}} = -0.58$).
+  \item Pendulum and spring (ambiguity rising to 1.0 in the ten-law set)
+  show positive benefit: \textbf{one of two held} (pendulum +0.54; spring
+  $-0.41$).
+\end{itemize}
+
+The learned quantity embeddings do not explain the pendulum anomaly: the
+maximum cosine similarity between pendulum's tokens and any other law's
+quantity token is 0.30 (computed from the trained checkpoint
+\texttt{lca\_real\_s0.pt}).
+
+\begin{table}[h]
+\centering\small
+\caption{\textbf{The ten-law out-of-sample test, per seed.}
+Curve errors: held-out peak-normalized trajectory MAE. Benefit:
+$1 - \mathrm{median}_{s}\,\mathrm{err}_{\mathrm{real}} /
+\mathrm{median}_{s}\,\mathrm{err}_{\mathrm{dummy}}$. Ambiguity is the
+pre-registered vocabulary-only value; twin marks the only pair whose
+parameter-token sequences are identical.}
+\label{tab:oos}
+\begin{tabular}{lccccl}
+\toprule
+Law & real s0/s1/s2 & dummy s0/s1/s2 & benefit & ambiguity & twin \\
+\midrule
+beam       & 0.143 / 0.068 / 0.097 & 0.346 / 0.357 / 0.285 & +0.72 & 1.0 & yes \\
+cantilever & 0.152 / 0.138 / 0.132 & 0.208 / 0.209 / 0.248 & +0.34 & 1.0 & yes \\
+pendulum   & 0.042 / 0.054 / 0.076 & 0.146 / 0.105 / 0.116 & +0.54 & 1.0 & no \\
+projectile & 0.102 / 0.133 / 0.110 & 0.128 / 0.108 / 0.129 & +0.14 & 0.5 & no \\
+drag       & 0.059 / 0.090 / 0.067 & 0.076 / 0.065 / 0.077 & +0.11 & 0.5 & no \\
+damped     & 0.146 / 0.116 / 0.141 & 0.139 / 0.155 / 0.106 & $-0.01$ & 0.75 & no \\
+rc (deg.)  & 0.154 / 0.111 / 0.126 & 0.133 / 0.117 / 0.120 & $-0.05$ & 0.667 & no \\
+kepler     & 0.171 / 0.151 / 0.157 & 0.139 / 0.207 / 0.132 & $-0.13$ & 0.667 & no \\
+lc         & 0.090 / 0.121 / 0.100 & 0.087 / 0.080 / 0.097 & $-0.15$ & 0.667 & no \\
+spring     & 0.111 / 0.084 / 0.134 & 0.068 / 0.101 / 0.079 & $-0.41$ & 1.0 & no \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{SI 10. Reproducibility}
+\label{si:repro}
+
+All experiments are driven by committed scripts under \texttt{physx/} and
+read/write committed JSON artifacts under \texttt{paper\_physformer/fig/}:
+
+\begin{itemize}[leftmargin=1.6em,itemsep=0.15em]
+  \item \texttt{train\_multi.py} --- multi-law generalist and dummy control
+  (96 samples/law, 250 epochs, 6 seeds);
+  \item \texttt{lca\_significance.py} --- pooled and per-domain paired
+  statistics from the trained checkpoints;
+  \item \texttt{law\_swap.py} --- at-inference equation swapping (inference
+  only, no retraining);
+  \item \texttt{train\_fewshot.py} --- five-law pretrain, 24-sample
+  adaptation, and the from-scratch specialist;
+  \item \texttt{run\_physvdata.py} --- physics-vs-data sweep on heat2d;
+  \item \texttt{regime\_analysis.py} --- ambiguity computation and exact
+  permutation test (six laws);
+  \item \texttt{cache\_problems.py} / \texttt{regime\_oos.py} --- ten-law
+  problem sets, pre-registered out-of-sample test;
+  \item \texttt{baselines.py} --- per-law DeepONet external baseline.
+\end{itemize}
+
+The test suite (\texttt{physx/test\_physx.py}; 49 physics tests) covers the
+tensor pipeline, the \LCA{} forward/backward pass, the dummy-mode
+invariance property, law-swap invariance of the control, the significance
+aggregation, the ten-law pre-registration, and the DeepONet baseline
+artifacts. All reported numbers can be reproduced by running these scripts
+on the committed artifacts; retraining from scratch uses the deterministic
+seed protocol in the scripts and takes under an hour per run on a 20-core
+CPU.
+
+\end{document}

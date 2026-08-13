@@ -1,0 +1,26 @@
+{
+  "pre_registered_before_training": true,
+  "experiment": "10-law shared-head generalist (real vs dummy law signature), 3 seeds each",
+  "hypothesis": "The LCA benefit (1 - curve_err_real / curve_err_dummy) is monotone non-decreasing in equation ambiguity, where ambiguity(i) = max_j |Q_i intersect Q_j| / |Q_i| is computed from the physical-quantity token vocabulary alone -- before any training.",
+  "ambiguity_from_vocabulary_only": {
+    "beam": 1.0, "cantilever": 1.0, "pendulum": 1.0, "spring": 1.0,
+    "damped": 0.75,
+    "kepler": 0.667, "lc": 0.667, "rc": 0.667,
+    "projectile": 0.5, "drag": 0.5
+  },
+  "predicted_benefit_order_high_to_low": [
+    "beam", "cantilever", "pendulum", "spring",
+    "damped",
+    "kepler", "lc",
+    "projectile", "drag"
+  ],
+  "excluded": {
+    "rc": "normalized trajectory is parameter-invariant (structural degeneracy): neither condition can improve it, so benefit is uninformative regardless of ambiguity"
+  },
+  "falsifiable_statements": [
+    "rho(ambiguity, benefit) > 0 over the 9 non-degenerate laws with exact permutation p < 0.05",
+    "leave-one-law-out predicted benefit ranks correlate with measured benefit ranks (rho_OOS > 0 with p < 0.05)",
+    "pendulum and spring -- whose ambiguity rises from 0.5/0.0 to 1.0 when kepler/damped enter the law set -- show a positive benefit in the 10-law model"
+  ],
+  "recorded_at": "before any 10-law training run"
+}

@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.pt
+*.log
+*.err
+*.aux
+*.out
+*.toc
+*.bbl
+*.blg
+.DS_Store
+Thumbs.db

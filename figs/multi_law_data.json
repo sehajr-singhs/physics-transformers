@@ -1,0 +1,179 @@
+{
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "n_pairs": 36,
+ "pooled": {
+  "ans_rel_mae": {
+   "wilcoxon": 280.0,
+   "p": 0.41403430147329345,
+   "cliffs_delta": -0.05555555555555555,
+   "median_real": 0.17089556702932268,
+   "median_dummy": 0.1675286751425286,
+   "median_ratio": 1.0200974065122264,
+   "real_mean": 0.4456171133281716,
+   "dummy_mean": 0.39353428571868093
+  },
+  "curve_err": {
+   "wilcoxon": 112.0,
+   "p": 0.0002897811937145889,
+   "cliffs_delta": 0.3333333333333333,
+   "median_real": 0.09270673245191574,
+   "median_dummy": 0.11763827875256538,
+   "median_ratio": 0.7880660396851824,
+   "real_mean": 0.09204146959301499,
+   "dummy_mean": 0.15591655537072155
+  },
+  "phys_resid": {
+   "wilcoxon": 253.0,
+   "p": 0.21446940102032386,
+   "cliffs_delta": 0.1111111111111111,
+   "median_real": 0.5667993426322937,
+   "median_dummy": 0.41932545602321625,
+   "median_ratio": 1.3516931407114774,
+   "real_mean": 211.290914731886,
+   "dummy_mean": 417.58199382885425
+  }
+ },
+ "per_domain": {
+  "beam": {
+   "ans_rel_mae": {
+    "p": 1.0,
+    "median_real": 0.3400414931713994,
+    "median_dummy": 0.40448162649413333
+   },
+   "curve_err": {
+    "p": 0.03125,
+    "median_real": 0.0474544633179903,
+    "median_dummy": 0.2890767604112625
+   },
+   "phys_resid": {
+    "p": 0.3125,
+    "median_real": 183.24159240722656,
+    "median_dummy": 115.62338638305664
+   }
+  },
+  "cantilever": {
+   "ans_rel_mae": {
+    "p": 1.0,
+    "median_real": 0.28336461446995354,
+    "median_dummy": 0.34576004268017824
+   },
+   "curve_err": {
+    "p": 0.03125,
+    "median_real": 0.1292598620057106,
+    "median_dummy": 0.25170130282640457
+   },
+   "phys_resid": {
+    "p": 0.03125,
+    "median_real": 581.9251403808594,
+    "median_dummy": 1969.8052978515625
+   }
+  },
+  "projectile": {
+   "ans_rel_mae": {
+    "p": 0.4375,
+    "median_real": 0.10999503069609187,
+    "median_dummy": 0.11171754396266602
+   },
+   "curve_err": {
+    "p": 0.6875,
+    "median_real": 0.10164301469922066,
+    "median_dummy": 0.1285058781504631
+   },
+   "phys_resid": {
+    "p": 0.84375,
+    "median_real": 0.0534826684743166,
+    "median_dummy": 0.04337997920811176
+   }
+  },
+  "pendulum": {
+   "ans_rel_mae": {
+    "p": 0.5625,
+    "median_real": 0.020691830458106134,
+    "median_dummy": 0.023025099022338444
+   },
+   "curve_err": {
+    "p": 0.6875,
+    "median_real": 0.049899183213710785,
+    "median_dummy": 0.05629374459385872
+   },
+   "phys_resid": {
+    "p": 1.0,
+    "median_real": 0.0034891984541900456,
+    "median_dummy": 0.005235182354226708
+   }
+  },
+  "spring": {
+   "ans_rel_mae": {
+    "p": 1.0,
+    "median_real": 0.0634050673615586,
+    "median_dummy": 0.05785784699097231
+   },
+   "curve_err": {
+    "p": 0.3125,
+    "median_real": 0.09055706486105919,
+    "median_dummy": 0.08767734095454216
+   },
+   "phys_resid": {
+    "p": 0.4375,
+    "median_real": 0.1540977582335472,
+    "median_dummy": 0.23008044809103012
+   }
+  },
+  "rc": {
+   "ans_rel_mae": {
+    "p": 0.03125,
+    "median_real": 0.6114576847819766,
+    "median_dummy": 0.5089480384028771
+   },
+   "curve_err": {
+    "p": 0.15625,
+    "median_real": 0.09891752898693085,
+    "median_dummy": 0.11545144021511078
+   },
+   "phys_resid": {
+    "p": 0.6875,
+    "median_real": 14.789029598236084,
+    "median_dummy": 10.474710941314697
+   }
+  }
+ },
+ "specialists": {
+  "beam": {
+   "ans_rel_mae": 0.10254094943359739,
+   "curve_err": 0.06100308336317539,
+   "phys_resid": 0.2504693220059077
+  },
+  "cantilever": {
+   "ans_rel_mae": 0.09970234581107475,
+   "curve_err": 0.09899992495775223,
+   "phys_resid": 3.063280781110128
+  },
+  "projectile": {
+   "ans_rel_mae": 0.0915225434986699,
+   "curve_err": 0.11967690164844196,
+   "phys_resid": 0.13126020381848016
+  },
+  "pendulum": {
+   "ans_rel_mae": 0.00789948922958165,
+   "curve_err": 0.12094265098373096,
+   "phys_resid": 0.0007109653864366313
+  },
+  "spring": {
+   "ans_rel_mae": 0.05555204789087695,
+   "curve_err": 0.1256507175664107,
+   "phys_resid": 0.10045011279483636
+  },
+  "rc": {
+   "ans_rel_mae": 0.35960451382897557,
+   "curve_err": 0.2207390939195951,
+   "phys_resid": 1.764393297334512
+  }
+ }
+}

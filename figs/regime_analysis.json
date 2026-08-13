@@ -1,0 +1,67 @@
+{
+ "domains": [
+  {
+   "domain": "beam",
+   "ambiguity": 1.0,
+   "curve_real_median": 0.0474544633179903,
+   "curve_dummy_median": 0.2890767604112625,
+   "benefit": 0.8358413064734849,
+   "benefit_x": 6.091666414477636,
+   "p": 0.03125
+  },
+  {
+   "domain": "cantilever",
+   "ambiguity": 1.0,
+   "curve_real_median": 0.1292598620057106,
+   "curve_dummy_median": 0.25170130282640457,
+   "benefit": 0.48645533195805657,
+   "benefit_x": 1.947250282653749,
+   "p": 0.03125
+  },
+  {
+   "domain": "projectile",
+   "ambiguity": 0.5,
+   "curve_real_median": 0.10164301469922066,
+   "curve_dummy_median": 0.1285058781504631,
+   "benefit": 0.20903995862189007,
+   "benefit_x": 1.2642863705955036,
+   "p": 0.6875
+  },
+  {
+   "domain": "pendulum",
+   "ambiguity": 0.5,
+   "curve_real_median": 0.049899183213710785,
+   "curve_dummy_median": 0.05629374459385872,
+   "benefit": 0.11359275220155707,
+   "benefit_x": 1.1281496202605357,
+   "p": 0.6875
+  },
+  {
+   "domain": "spring",
+   "ambiguity": 0.0,
+   "curve_real_median": 0.09055706486105919,
+   "curve_dummy_median": 0.08767734095454216,
+   "benefit": -0.03284456251940937,
+   "benefit_x": 0.9681998979214337,
+   "p": 0.3125
+  },
+  {
+   "domain": "rc",
+   "ambiguity": 0.0,
+   "curve_real_median": 0.09891752898693085,
+   "curve_dummy_median": 0.11545144021511078,
+   "benefit": 0.14321095689558927,
+   "benefit_x": 1.1671484457559025,
+   "p": 0.15625
+  }
+ ],
+ "spearman_all": {
+  "rho": 0.7714285714285715,
+  "p": 0.10277777777777777
+ },
+ "spearman_5_nondegenerate": {
+  "rho": 1.0,
+  "p": 0.016666666666666666
+ },
+ "note": "rc excluded from the headline rho: its normalized curve is parameter-invariant, so neither condition can improve it"
+}

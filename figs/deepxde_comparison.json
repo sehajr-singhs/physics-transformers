@@ -1,0 +1,60 @@
+{
+ "instances": {
+  "canonical": {
+   "params": {
+    "nu": 0.05,
+    "A": 1.5,
+    "sigma": 0.3
+   },
+   "deepxde": {
+    "answer_err": 0.0,
+    "curve_err": 0.0003,
+    "phys_resid": 0.0033,
+    "train_wall_s": 1163
+   },
+   "physformer": {
+    "answer_err": 0.0054,
+    "curve_err": 0.32939999999999997,
+    "phys_resid": 0.0002
+   }
+  },
+  "mild": {
+   "params": {
+    "nu": 0.1,
+    "A": 0.8,
+    "sigma": 0.45
+   },
+   "deepxde": {
+    "answer_err": 0.0001,
+    "curve_err": 0.0006,
+    "phys_resid": 0.0013,
+    "train_wall_s": 1116
+   },
+   "physformer": {
+    "answer_err": 0.0002,
+    "curve_err": 0.5054,
+    "phys_resid": 0.0017
+   }
+  },
+  "shock": {
+   "params": {
+    "nu": 0.02,
+    "A": 1.8,
+    "sigma": 0.25
+   },
+   "deepxde": {
+    "answer_err": 0.0,
+    "curve_err": 0.0003,
+    "phys_resid": 0.0051,
+    "train_wall_s": 1272
+   },
+   "physformer": {
+    "answer_err": 0.0373,
+    "curve_err": 0.379,
+    "phys_resid": 0.0016
+   }
+  }
+ },
+ "model": "deepxde 1.15.0 (pytorch backend)",
+ "physformer_model": "burgers.pt"
+}

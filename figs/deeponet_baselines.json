@@ -1,0 +1,51 @@
+{
+ "domains": [
+  "beam",
+  "cantilever",
+  "projectile",
+  "pendulum",
+  "spring",
+  "rc",
+  "damped",
+  "kepler",
+  "lc",
+  "drag"
+ ],
+ "per_domain": 96,
+ "n_val": 12,
+ "epochs": 250,
+ "per_law": {
+  "beam": {
+   "curve_err": 0.02451
+  },
+  "cantilever": {
+   "curve_err": 0.00865
+  },
+  "projectile": {
+   "curve_err": 0.01098
+  },
+  "pendulum": {
+   "curve_err": 0.03674
+  },
+  "spring": {
+   "curve_err": 0.12172
+  },
+  "rc": {
+   "curve_err": 0.00736
+  },
+  "damped": {
+   "curve_err": 0.14053
+  },
+  "kepler": {
+   "curve_err": 0.06628
+  },
+  "lc": {
+   "curve_err": 0.19192
+  },
+  "drag": {
+   "curve_err": 0.01123
+  }
+ },
+ "pooled_lawid": null,
+ "pooled_note": "pooled single-model DeepONet rerun did not complete under CPU contention; per-law DeepONet is the reported external operator baseline"
+}
